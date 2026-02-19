@@ -1,0 +1,8 @@
+[project]
+name = "image_processor"
+source_dir = "src"
+
+[android]
+package_name = "rs.craby.imageprocessor"
+
+[ios]
