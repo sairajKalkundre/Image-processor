@@ -9,6 +9,9 @@ craby = "0.1.0-rc"
 cxx = { version = "1.0.187", features = ["c++20"] }
 image = "0.25.9"
 base64 = "0.22"
+parking_lot = "0.12"
+mozjpeg  = { version = "0.10", features = ["with_simd"] }
+oxipng = { version = "9", default-features = false, features = ["rayon", "filetime"] }
 
 [build-dependencies]
 craby_build = { version = "0.1.0-rc", features = ["cxx"] }

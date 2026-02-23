@@ -467,10 +467,12 @@ namespace bridging {
 #ifndef CXXBRIDGE1_STRUCT_craby$imageprocessor$bridging$ImageResult
 #define CXXBRIDGE1_STRUCT_craby$imageprocessor$bridging$ImageResult
 struct ImageResult final {
-  ::rust::String base_64;
+  ::rust::String uri;
   double width CXX_DEFAULT_VALUE(0);
   double height CXX_DEFAULT_VALUE(0);
   ::rust::String format;
+  double size CXX_DEFAULT_VALUE(0);
+  double compression_ratio CXX_DEFAULT_VALUE(0);
 
   using IsRelocatable = ::std::true_type;
 };
@@ -496,7 +498,19 @@ extern "C" {
 
 ::craby::imageprocessor::bridging::ImageProcessor *craby$imageprocessor$bridging$cxxbridge1$194$create_image_processor(::std::size_t id, ::rust::Str data_path) noexcept;
 
-::rust::repr::PtrLen craby$imageprocessor$bridging$cxxbridge1$194$image_processor_load_image(::craby::imageprocessor::bridging::ImageProcessor &it_, ::rust::Str path, ::craby::imageprocessor::bridging::ImageResult *return$) noexcept;
+::rust::repr::PtrLen craby$imageprocessor$bridging$cxxbridge1$194$image_processor_compress(::craby::imageprocessor::bridging::ImageProcessor &it_, double quality, ::rust::Str format) noexcept;
+
+::rust::repr::PtrLen craby$imageprocessor$bridging$cxxbridge1$194$image_processor_crop(::craby::imageprocessor::bridging::ImageProcessor &it_, double x, double y, double width, double height) noexcept;
+
+::rust::repr::PtrLen craby$imageprocessor$bridging$cxxbridge1$194$image_processor_flip(::craby::imageprocessor::bridging::ImageProcessor &it_, bool horizontal) noexcept;
+
+::rust::repr::PtrLen craby$imageprocessor$bridging$cxxbridge1$194$image_processor_resize(::craby::imageprocessor::bridging::ImageProcessor &it_, double width, double height, ::rust::Str fit) noexcept;
+
+::rust::repr::PtrLen craby$imageprocessor$bridging$cxxbridge1$194$image_processor_rotate(::craby::imageprocessor::bridging::ImageProcessor &it_, double degrees) noexcept;
+
+::rust::repr::PtrLen craby$imageprocessor$bridging$cxxbridge1$194$image_processor_save(::craby::imageprocessor::bridging::ImageProcessor &it_, ::craby::imageprocessor::bridging::ImageResult *return$) noexcept;
+
+::rust::repr::PtrLen craby$imageprocessor$bridging$cxxbridge1$194$image_processor_set_file_path(::craby::imageprocessor::bridging::ImageProcessor &it_, ::rust::Str path) noexcept;
 } // extern "C"
 
 ::std::size_t ImageProcessor::layout::size() noexcept {
@@ -511,13 +525,55 @@ extern "C" {
   return ::rust::Box<::craby::imageprocessor::bridging::ImageProcessor>::from_raw(craby$imageprocessor$bridging$cxxbridge1$194$create_image_processor(id, data_path));
 }
 
-::craby::imageprocessor::bridging::ImageResult loadImage(::craby::imageprocessor::bridging::ImageProcessor &it_, ::rust::Str path) {
+void compress(::craby::imageprocessor::bridging::ImageProcessor &it_, double quality, ::rust::Str format) {
+  ::rust::repr::PtrLen error$ = craby$imageprocessor$bridging$cxxbridge1$194$image_processor_compress(it_, quality, format);
+  if (error$.ptr) {
+    throw ::rust::impl<::rust::Error>::error(error$);
+  }
+}
+
+void crop(::craby::imageprocessor::bridging::ImageProcessor &it_, double x, double y, double width, double height) {
+  ::rust::repr::PtrLen error$ = craby$imageprocessor$bridging$cxxbridge1$194$image_processor_crop(it_, x, y, width, height);
+  if (error$.ptr) {
+    throw ::rust::impl<::rust::Error>::error(error$);
+  }
+}
+
+void flip(::craby::imageprocessor::bridging::ImageProcessor &it_, bool horizontal) {
+  ::rust::repr::PtrLen error$ = craby$imageprocessor$bridging$cxxbridge1$194$image_processor_flip(it_, horizontal);
+  if (error$.ptr) {
+    throw ::rust::impl<::rust::Error>::error(error$);
+  }
+}
+
+void resize(::craby::imageprocessor::bridging::ImageProcessor &it_, double width, double height, ::rust::Str fit) {
+  ::rust::repr::PtrLen error$ = craby$imageprocessor$bridging$cxxbridge1$194$image_processor_resize(it_, width, height, fit);
+  if (error$.ptr) {
+    throw ::rust::impl<::rust::Error>::error(error$);
+  }
+}
+
+void rotate(::craby::imageprocessor::bridging::ImageProcessor &it_, double degrees) {
+  ::rust::repr::PtrLen error$ = craby$imageprocessor$bridging$cxxbridge1$194$image_processor_rotate(it_, degrees);
+  if (error$.ptr) {
+    throw ::rust::impl<::rust::Error>::error(error$);
+  }
+}
+
+::craby::imageprocessor::bridging::ImageResult save(::craby::imageprocessor::bridging::ImageProcessor &it_) {
   ::rust::MaybeUninit<::craby::imageprocessor::bridging::ImageResult> return$;
-  ::rust::repr::PtrLen error$ = craby$imageprocessor$bridging$cxxbridge1$194$image_processor_load_image(it_, path, &return$.value);
+  ::rust::repr::PtrLen error$ = craby$imageprocessor$bridging$cxxbridge1$194$image_processor_save(it_, &return$.value);
   if (error$.ptr) {
     throw ::rust::impl<::rust::Error>::error(error$);
   }
   return ::std::move(return$.value);
+}
+
+void setFilePath(::craby::imageprocessor::bridging::ImageProcessor &it_, ::rust::Str path) {
+  ::rust::repr::PtrLen error$ = craby$imageprocessor$bridging$cxxbridge1$194$image_processor_set_file_path(it_, path);
+  if (error$.ptr) {
+    throw ::rust::impl<::rust::Error>::error(error$);
+  }
 }
 } // namespace bridging
 } // namespace imageprocessor

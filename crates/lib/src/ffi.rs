@@ -11,10 +11,12 @@ use bridging::*;
 pub mod bridging {
     #[derive(Clone)]
     struct ImageResult {
-        base_64: String,
+        uri: String,
         width: f64,
         height: f64,
         format: String,
+        size: f64,
+        compression_ratio: f64,
     }
 
     extern "Rust" {
@@ -23,8 +25,26 @@ pub mod bridging {
         #[cxx_name = "createImageProcessor"]
         fn create_image_processor(id: usize, data_path: &str) -> Box<ImageProcessor>;
 
-        #[cxx_name = "loadImage"]
-        fn image_processor_load_image(it_: &mut ImageProcessor, path: &str) -> Result<ImageResult>;
+        #[cxx_name = "compress"]
+        fn image_processor_compress(it_: &mut ImageProcessor, quality: f64, format: &str) -> Result<()>;
+
+        #[cxx_name = "crop"]
+        fn image_processor_crop(it_: &mut ImageProcessor, x: f64, y: f64, width: f64, height: f64) -> Result<()>;
+
+        #[cxx_name = "flip"]
+        fn image_processor_flip(it_: &mut ImageProcessor, horizontal: bool) -> Result<()>;
+
+        #[cxx_name = "resize"]
+        fn image_processor_resize(it_: &mut ImageProcessor, width: f64, height: f64, fit: &str) -> Result<()>;
+
+        #[cxx_name = "rotate"]
+        fn image_processor_rotate(it_: &mut ImageProcessor, degrees: f64) -> Result<()>;
+
+        #[cxx_name = "save"]
+        fn image_processor_save(it_: &mut ImageProcessor) -> Result<ImageResult>;
+
+        #[cxx_name = "setFilePath"]
+        fn image_processor_set_file_path(it_: &mut ImageProcessor, path: &str) -> Result<()>;
     }
 }
 
@@ -33,11 +53,53 @@ fn create_image_processor(id: usize, data_path: &str) -> Box<ImageProcessor> {
     Box::new(ImageProcessor::new(ctx))
 }
 
-fn image_processor_load_image(it_: &mut ImageProcessor, path: &str) -> Result<ImageResult, anyhow::Error> {
+fn image_processor_compress(it_: &mut ImageProcessor, quality: f64, format: &str) -> Result<(), anyhow::Error> {
     craby::catch_panic!({
-        let ret = it_.load_image(path);
+        let ret = it_.compress(quality, format);
+        ret
+    })
+}
+
+fn image_processor_crop(it_: &mut ImageProcessor, x: f64, y: f64, width: f64, height: f64) -> Result<(), anyhow::Error> {
+    craby::catch_panic!({
+        let ret = it_.crop(x, y, width, height);
+        ret
+    })
+}
+
+fn image_processor_flip(it_: &mut ImageProcessor, horizontal: bool) -> Result<(), anyhow::Error> {
+    craby::catch_panic!({
+        let ret = it_.flip(horizontal);
+        ret
+    })
+}
+
+fn image_processor_resize(it_: &mut ImageProcessor, width: f64, height: f64, fit: &str) -> Result<(), anyhow::Error> {
+    craby::catch_panic!({
+        let ret = it_.resize(width, height, fit);
+        ret
+    })
+}
+
+fn image_processor_rotate(it_: &mut ImageProcessor, degrees: f64) -> Result<(), anyhow::Error> {
+    craby::catch_panic!({
+        let ret = it_.rotate(degrees);
+        ret
+    })
+}
+
+fn image_processor_save(it_: &mut ImageProcessor) -> Result<ImageResult, anyhow::Error> {
+    craby::catch_panic!({
+        let ret = it_.save();
         ret
     }).and_then(|r| r)
+}
+
+fn image_processor_set_file_path(it_: &mut ImageProcessor, path: &str) -> Result<(), anyhow::Error> {
+    craby::catch_panic!({
+        let ret = it_.set_file_path(path);
+        ret
+    })
 }
 
 
