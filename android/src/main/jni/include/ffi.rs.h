@@ -404,10 +404,12 @@ namespace bridging {
 #ifndef CXXBRIDGE1_STRUCT_craby$imageprocessor$bridging$ImageResult
 #define CXXBRIDGE1_STRUCT_craby$imageprocessor$bridging$ImageResult
 struct ImageResult final {
-  ::rust::String base_64;
+  ::rust::String uri;
   double width CXX_DEFAULT_VALUE(0);
   double height CXX_DEFAULT_VALUE(0);
   ::rust::String format;
+  double size CXX_DEFAULT_VALUE(0);
+  double compression_ratio CXX_DEFAULT_VALUE(0);
 
   using IsRelocatable = ::std::true_type;
 };
@@ -429,7 +431,19 @@ private:
 
 ::rust::Box<::craby::imageprocessor::bridging::ImageProcessor> createImageProcessor(::std::size_t id, ::rust::Str data_path) noexcept;
 
-::craby::imageprocessor::bridging::ImageResult loadImage(::craby::imageprocessor::bridging::ImageProcessor &it_, ::rust::Str path);
+void compress(::craby::imageprocessor::bridging::ImageProcessor &it_, double quality, ::rust::Str format);
+
+void crop(::craby::imageprocessor::bridging::ImageProcessor &it_, double x, double y, double width, double height);
+
+void flip(::craby::imageprocessor::bridging::ImageProcessor &it_, bool horizontal);
+
+void resize(::craby::imageprocessor::bridging::ImageProcessor &it_, double width, double height, ::rust::Str fit);
+
+void rotate(::craby::imageprocessor::bridging::ImageProcessor &it_, double degrees);
+
+::craby::imageprocessor::bridging::ImageResult save(::craby::imageprocessor::bridging::ImageProcessor &it_);
+
+void setFilePath(::craby::imageprocessor::bridging::ImageProcessor &it_, ::rust::Str path);
 } // namespace bridging
 } // namespace imageprocessor
 } // namespace craby

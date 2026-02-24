@@ -123,21 +123,27 @@ template <>
 struct Bridging<craby::imageprocessor::bridging::ImageResult> {
   static craby::imageprocessor::bridging::ImageResult fromJs(jsi::Runtime &rt, const jsi::Value& value, std::shared_ptr<CallInvoker> callInvoker) {
     auto obj = value.asObject(rt);
-    auto obj$base64 = obj.getProperty(rt, "base64");
+    auto obj$uri = obj.getProperty(rt, "uri");
     auto obj$width = obj.getProperty(rt, "width");
     auto obj$height = obj.getProperty(rt, "height");
     auto obj$format = obj.getProperty(rt, "format");
+    auto obj$size = obj.getProperty(rt, "size");
+    auto obj$compressionRatio = obj.getProperty(rt, "compressionRatio");
 
-    auto _obj$base64 = react::bridging::fromJs<rust::String>(rt, obj$base64, callInvoker);
+    auto _obj$uri = react::bridging::fromJs<rust::String>(rt, obj$uri, callInvoker);
     auto _obj$width = react::bridging::fromJs<double>(rt, obj$width, callInvoker);
     auto _obj$height = react::bridging::fromJs<double>(rt, obj$height, callInvoker);
     auto _obj$format = react::bridging::fromJs<rust::String>(rt, obj$format, callInvoker);
+    auto _obj$size = react::bridging::fromJs<double>(rt, obj$size, callInvoker);
+    auto _obj$compressionRatio = react::bridging::fromJs<double>(rt, obj$compressionRatio, callInvoker);
 
     craby::imageprocessor::bridging::ImageResult ret = {
-      _obj$base64,
+      _obj$uri,
       _obj$width,
       _obj$height,
-      _obj$format
+      _obj$format,
+      _obj$size,
+      _obj$compressionRatio
     };
 
     return ret;
@@ -145,15 +151,19 @@ struct Bridging<craby::imageprocessor::bridging::ImageResult> {
 
   static jsi::Value toJs(jsi::Runtime &rt, craby::imageprocessor::bridging::ImageResult value) {
     jsi::Object obj = jsi::Object(rt);
-    auto _obj$base64 = react::bridging::toJs(rt, value.base_64);
+    auto _obj$uri = react::bridging::toJs(rt, value.uri);
     auto _obj$width = react::bridging::toJs(rt, value.width);
     auto _obj$height = react::bridging::toJs(rt, value.height);
     auto _obj$format = react::bridging::toJs(rt, value.format);
+    auto _obj$size = react::bridging::toJs(rt, value.size);
+    auto _obj$compressionRatio = react::bridging::toJs(rt, value.compression_ratio);
 
-    obj.setProperty(rt, "base64", _obj$base64);
+    obj.setProperty(rt, "uri", _obj$uri);
     obj.setProperty(rt, "width", _obj$width);
     obj.setProperty(rt, "height", _obj$height);
     obj.setProperty(rt, "format", _obj$format);
+    obj.setProperty(rt, "size", _obj$size);
+    obj.setProperty(rt, "compressionRatio", _obj$compressionRatio);
 
     return jsi::Value(rt, obj);
   }

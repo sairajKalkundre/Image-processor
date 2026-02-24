@@ -24,7 +24,13 @@ CxxImageProcessorModule::CxxImageProcessorModule(
     [](craby::imageprocessor::bridging::ImageProcessor *ptr) { rust::Box<craby::imageprocessor::bridging::ImageProcessor>::from_raw(ptr); }
   );
   threadPool_ = std::make_shared<craby::imageprocessor::utils::ThreadPool>(10);
-  methodMap_["loadImage"] = MethodMetadata{1, &CxxImageProcessorModule::loadImage};
+  methodMap_["compress"] = MethodMetadata{2, &CxxImageProcessorModule::compress};
+  methodMap_["crop"] = MethodMetadata{4, &CxxImageProcessorModule::crop};
+  methodMap_["flip"] = MethodMetadata{1, &CxxImageProcessorModule::flip};
+  methodMap_["resize"] = MethodMetadata{3, &CxxImageProcessorModule::resize};
+  methodMap_["rotate"] = MethodMetadata{1, &CxxImageProcessorModule::rotate};
+  methodMap_["save"] = MethodMetadata{0, &CxxImageProcessorModule::save};
+  methodMap_["setFilePath"] = MethodMetadata{1, &CxxImageProcessorModule::setFilePath};
 }
 
 CxxImageProcessorModule::~CxxImageProcessorModule() {
@@ -45,7 +51,169 @@ void CxxImageProcessorModule::invalidate() {
   threadPool_->shutdown();
 }
 
-jsi::Value CxxImageProcessorModule::loadImage(jsi::Runtime &rt,
+jsi::Value CxxImageProcessorModule::compress(jsi::Runtime &rt,
+                                react::TurboModule &turboModule,
+                                const jsi::Value args[],
+                                size_t count) {
+  auto &thisModule = static_cast<CxxImageProcessorModule &>(turboModule);
+  auto callInvoker = thisModule.callInvoker_;
+  auto it_ = thisModule.module_;
+
+  try {
+    if (2 != count) {
+      throw jsi::JSError(rt, "Expected 2 arguments");
+    }
+
+    auto arg0 = react::bridging::fromJs<double>(rt, args[0], callInvoker);
+    auto arg1$raw = args[1].asString(rt).utf8(rt);
+    auto arg1 = rust::Str(arg1$raw.data(), arg1$raw.size());
+    craby::imageprocessor::bridging::compress(*it_, arg0, arg1);
+
+    return jsi::Value::undefined();
+  } catch (const jsi::JSError &err) {
+    throw err;
+  } catch (const std::exception &err) {
+    throw jsi::JSError(rt, craby::imageprocessor::utils::errorMessage(err));
+  }
+}
+
+jsi::Value CxxImageProcessorModule::crop(jsi::Runtime &rt,
+                                react::TurboModule &turboModule,
+                                const jsi::Value args[],
+                                size_t count) {
+  auto &thisModule = static_cast<CxxImageProcessorModule &>(turboModule);
+  auto callInvoker = thisModule.callInvoker_;
+  auto it_ = thisModule.module_;
+
+  try {
+    if (4 != count) {
+      throw jsi::JSError(rt, "Expected 4 arguments");
+    }
+
+    auto arg0 = react::bridging::fromJs<double>(rt, args[0], callInvoker);
+    auto arg1 = react::bridging::fromJs<double>(rt, args[1], callInvoker);
+    auto arg2 = react::bridging::fromJs<double>(rt, args[2], callInvoker);
+    auto arg3 = react::bridging::fromJs<double>(rt, args[3], callInvoker);
+    craby::imageprocessor::bridging::crop(*it_, arg0, arg1, arg2, arg3);
+
+    return jsi::Value::undefined();
+  } catch (const jsi::JSError &err) {
+    throw err;
+  } catch (const std::exception &err) {
+    throw jsi::JSError(rt, craby::imageprocessor::utils::errorMessage(err));
+  }
+}
+
+jsi::Value CxxImageProcessorModule::flip(jsi::Runtime &rt,
+                                react::TurboModule &turboModule,
+                                const jsi::Value args[],
+                                size_t count) {
+  auto &thisModule = static_cast<CxxImageProcessorModule &>(turboModule);
+  auto callInvoker = thisModule.callInvoker_;
+  auto it_ = thisModule.module_;
+
+  try {
+    if (1 != count) {
+      throw jsi::JSError(rt, "Expected 1 argument");
+    }
+
+    auto arg0 = react::bridging::fromJs<bool>(rt, args[0], callInvoker);
+    craby::imageprocessor::bridging::flip(*it_, arg0);
+
+    return jsi::Value::undefined();
+  } catch (const jsi::JSError &err) {
+    throw err;
+  } catch (const std::exception &err) {
+    throw jsi::JSError(rt, craby::imageprocessor::utils::errorMessage(err));
+  }
+}
+
+jsi::Value CxxImageProcessorModule::resize(jsi::Runtime &rt,
+                                react::TurboModule &turboModule,
+                                const jsi::Value args[],
+                                size_t count) {
+  auto &thisModule = static_cast<CxxImageProcessorModule &>(turboModule);
+  auto callInvoker = thisModule.callInvoker_;
+  auto it_ = thisModule.module_;
+
+  try {
+    if (3 != count) {
+      throw jsi::JSError(rt, "Expected 3 arguments");
+    }
+
+    auto arg0 = react::bridging::fromJs<double>(rt, args[0], callInvoker);
+    auto arg1 = react::bridging::fromJs<double>(rt, args[1], callInvoker);
+    auto arg2$raw = args[2].asString(rt).utf8(rt);
+    auto arg2 = rust::Str(arg2$raw.data(), arg2$raw.size());
+    craby::imageprocessor::bridging::resize(*it_, arg0, arg1, arg2);
+
+    return jsi::Value::undefined();
+  } catch (const jsi::JSError &err) {
+    throw err;
+  } catch (const std::exception &err) {
+    throw jsi::JSError(rt, craby::imageprocessor::utils::errorMessage(err));
+  }
+}
+
+jsi::Value CxxImageProcessorModule::rotate(jsi::Runtime &rt,
+                                react::TurboModule &turboModule,
+                                const jsi::Value args[],
+                                size_t count) {
+  auto &thisModule = static_cast<CxxImageProcessorModule &>(turboModule);
+  auto callInvoker = thisModule.callInvoker_;
+  auto it_ = thisModule.module_;
+
+  try {
+    if (1 != count) {
+      throw jsi::JSError(rt, "Expected 1 argument");
+    }
+
+    auto arg0 = react::bridging::fromJs<double>(rt, args[0], callInvoker);
+    craby::imageprocessor::bridging::rotate(*it_, arg0);
+
+    return jsi::Value::undefined();
+  } catch (const jsi::JSError &err) {
+    throw err;
+  } catch (const std::exception &err) {
+    throw jsi::JSError(rt, craby::imageprocessor::utils::errorMessage(err));
+  }
+}
+
+jsi::Value CxxImageProcessorModule::save(jsi::Runtime &rt,
+                                react::TurboModule &turboModule,
+                                const jsi::Value args[],
+                                size_t count) {
+  auto &thisModule = static_cast<CxxImageProcessorModule &>(turboModule);
+  auto callInvoker = thisModule.callInvoker_;
+  auto it_ = thisModule.module_;
+
+  try {
+    if (0 != count) {
+      throw jsi::JSError(rt, "Expected 0 argument");
+    }
+
+    react::AsyncPromise<craby::imageprocessor::bridging::ImageResult> promise(rt, callInvoker);
+
+    thisModule.threadPool_->enqueue([it_, promise]() mutable {
+      try {
+        auto ret = craby::imageprocessor::bridging::save(*it_);
+        promise.resolve(ret);
+      } catch (const jsi::JSError &err) {
+        promise.reject(err.getMessage());
+      } catch (const std::exception &err) {
+        promise.reject(craby::imageprocessor::utils::errorMessage(err));
+      }
+    });
+
+    return react::bridging::toJs(rt, promise);
+  } catch (const jsi::JSError &err) {
+    throw err;
+  } catch (const std::exception &err) {
+    throw jsi::JSError(rt, craby::imageprocessor::utils::errorMessage(err));
+  }
+}
+
+jsi::Value CxxImageProcessorModule::setFilePath(jsi::Runtime &rt,
                                 react::TurboModule &turboModule,
                                 const jsi::Value args[],
                                 size_t count) {
@@ -60,20 +228,9 @@ jsi::Value CxxImageProcessorModule::loadImage(jsi::Runtime &rt,
 
     auto arg0$raw = args[0].asString(rt).utf8(rt);
     auto arg0 = rust::Str(arg0$raw.data(), arg0$raw.size());
-    react::AsyncPromise<craby::imageprocessor::bridging::ImageResult> promise(rt, callInvoker);
+    craby::imageprocessor::bridging::setFilePath(*it_, arg0);
 
-    thisModule.threadPool_->enqueue([it_, promise, arg0]() mutable {
-      try {
-        auto ret = craby::imageprocessor::bridging::loadImage(*it_, arg0);
-        promise.resolve(ret);
-      } catch (const jsi::JSError &err) {
-        promise.reject(err.getMessage());
-      } catch (const std::exception &err) {
-        promise.reject(craby::imageprocessor::utils::errorMessage(err));
-      }
-    });
-
-    return react::bridging::toJs(rt, promise);
+    return jsi::Value::undefined();
   } catch (const jsi::JSError &err) {
     throw err;
   } catch (const std::exception &err) {

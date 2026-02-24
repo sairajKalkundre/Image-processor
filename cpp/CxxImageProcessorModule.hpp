@@ -21,7 +21,37 @@ public:
 
   void invalidate();
   static facebook::jsi::Value
-  loadImage(facebook::jsi::Runtime &rt,
+  compress(facebook::jsi::Runtime &rt,
+      facebook::react::TurboModule &turboModule,
+      const facebook::jsi::Value args[], size_t count);
+
+  static facebook::jsi::Value
+  crop(facebook::jsi::Runtime &rt,
+      facebook::react::TurboModule &turboModule,
+      const facebook::jsi::Value args[], size_t count);
+
+  static facebook::jsi::Value
+  flip(facebook::jsi::Runtime &rt,
+      facebook::react::TurboModule &turboModule,
+      const facebook::jsi::Value args[], size_t count);
+
+  static facebook::jsi::Value
+  resize(facebook::jsi::Runtime &rt,
+      facebook::react::TurboModule &turboModule,
+      const facebook::jsi::Value args[], size_t count);
+
+  static facebook::jsi::Value
+  rotate(facebook::jsi::Runtime &rt,
+      facebook::react::TurboModule &turboModule,
+      const facebook::jsi::Value args[], size_t count);
+
+  static facebook::jsi::Value
+  save(facebook::jsi::Runtime &rt,
+      facebook::react::TurboModule &turboModule,
+      const facebook::jsi::Value args[], size_t count);
+
+  static facebook::jsi::Value
+  setFilePath(facebook::jsi::Runtime &rt,
       facebook::react::TurboModule &turboModule,
       const facebook::jsi::Value args[], size_t count);
 
