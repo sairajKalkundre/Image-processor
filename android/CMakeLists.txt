@@ -33,6 +33,7 @@ target_link_libraries(cxx-image-processor
   ReactAndroid::jsi
   # image-processor-lib
   image-processor-lib
+  log
 )
 
 # From ReactAndroid/cmake-utils/folly-flags.cmake

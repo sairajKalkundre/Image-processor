@@ -19,7 +19,7 @@ export default function App() {
         await RNFS.copyFileAssets('50mb.jpg', filePath);
       }
     } else {
-      filePath = `${RNFS.MainBundlePath}/potrait.jpg`;
+      filePath = `${RNFS.MainBundlePath}/50mb.jpg`;
     }
     return filePath;
   }
@@ -30,7 +30,7 @@ export default function App() {
       let filePath = await getFilePath();
       // ImageProcessor.load(filePath);
       console.log('filePath', filePath)
-          const result = await ImageProcessor.load(filePath).resize({width : 750 , height : 450,fit : 'contain'}).save();
+          const result = await ImageProcessor.load(filePath).resize({width : 750, height : 400, fit:'contain'}).save();
         console.log('resize', result);
       setUri(result.uri);
       setInfo(`${result.width}x${result.height}`);

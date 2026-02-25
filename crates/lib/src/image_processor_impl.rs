@@ -1,8 +1,13 @@
+use std::sync::Once;
 use craby::prelude::*;
 use crate::ffi::bridging::*;
 use crate::generated::*;
 use image::imageops::FilterType;
 use parking_lot::RwLock;
+use log::info;
+
+#[cfg(target_os = "android")]
+extern crate android_log;
 
 mod image_utils;
 mod compress_fns;
@@ -38,8 +43,35 @@ struct PipelineState {
     encode: EncodeOptions,  // tracks the final format across the pipeline
 }
 static PIPELINE: RwLock<Option<PipelineState>> = RwLock::new(None);
+fn init_logging() {
+    #[cfg(target_os = "android")]
+    {
+        static LOG_INIT: std::sync::Once = std::sync::Once::new();
+        LOG_INIT.call_once(|| {
+            android_log::init("ImageProcessor").ok();
+        });
+    }
+}
+
+fn log_memory(tag: &str) {
+    #[cfg(target_os = "android")]
+    {
+        if let Ok(status) = std::fs::read_to_string("/proc/self/status") {
+            for line in status.lines() {
+                if line.starts_with("VmRSS:") || line.starts_with("VmPeak:") {
+                    info!("[{}] {}", tag, line.trim());
+                }
+            }
+        }
+    }
+    // Silence unused variable warning on iOS
+    #[cfg(not(target_os = "android"))]
+    let _ = tag;
+}
+
 #[craby_module]
 impl ImageProcessorSpec for ImageProcessor {
+
     fn set_file_path(&mut self, path: &str) -> Void {
         *PIPELINE.write() = Some(PipelineState {
             path: path.to_string(),
@@ -70,6 +102,7 @@ impl ImageProcessorSpec for ImageProcessor {
     }fn rotate(&mut self, degrees: Number) -> Void {
         todo!()
     }fn save(&mut self) -> Promise<ImageResult> {
+        init_logging();
         let result: Result<ImageResult, String> = (|| {
             let state = PIPELINE.write().take()
                 .ok_or("No image loaded. Call setFilePath first.")?;
@@ -79,7 +112,8 @@ impl ImageProcessorSpec for ImageProcessor {
             }
             let orig_size = image_utils::original_size(&state.path);
             let (mut img,_,_, orig_format) = image_utils::decode_image(&state.path)?;
-
+            log_memory("after-decode");
+            info!("Starting resize {}x{}", img.width(), img.height());
             // Apply operations in order
             for op in &state.operations {
                 match op {
@@ -87,11 +121,22 @@ impl ImageProcessorSpec for ImageProcessor {
                         let (tw, th) = image_utils::resolve_dimensions(
                             img.width(), img.height(), *width, *height
                         );
-                        img = match fit.as_str() {
-                            "cover" => img.resize_to_fill(tw, th, FilterType::Lanczos3),
-                            "fill"  => img.resize_exact(tw, th, FilterType::Lanczos3),
-                            _       => img.resize(tw, th, FilterType::Lanczos3),
+                        let fit_str = if fit.is_empty() { "contain" } else { fit.as_str() };
+                        let img_to_resize = if img.width() > tw * 4 || img.height() > th * 4 {
+                            // Quick nearest-neighbor pre-downsample to 2x target
+                            // Then Lanczos3 on the smaller image — same quality, less RAM
+                            img.resize(tw * 2, th * 2, FilterType::Nearest)
+                        } else {
+                            img
                         };
+                        log_memory("before-resize");
+                        let resized = match fit_str {
+                            "cover" => img_to_resize.resize_to_fill(tw, th, FilterType::Lanczos3),
+                            "fill"  => img_to_resize.resize_exact(tw, th, FilterType::Lanczos3),
+                            _       => img_to_resize.resize(tw, th, FilterType::Lanczos3),
+                        };
+                        log_memory("after-resize");
+                        img = resized;
                         eprintln!("✓ Resize → {}x{}", tw, th);
                     }
                     _ => {}
@@ -110,8 +155,8 @@ impl ImageProcessorSpec for ImageProcessor {
                 "webp"         => compress_fns::compress_webp(&img, quality)?,
                 _              => compress_fns::compress_jpeg(&img, quality)?,
             };
+            drop(img);
             let file_name = image_utils::file_name_from_path(&state.path);
-
             let mut result = image_utils::save_bytes(&bytes, file_name, &out_format)?;
             result.compression_ratio = if result.size > 0.0 {
                 orig_size / result.size
