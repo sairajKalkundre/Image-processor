@@ -15,6 +15,7 @@
 		02A28F2D0E374C589ABAB1FA /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 8F1F2237B35F4923963A8A93 /* icon.png */; };
 		C2E4520C772A4602ACC15C71 /* potrait.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 7EC31CFFA76B4D129CFF3064 /* potrait.jpg */; };
 		05DDA859C7094FB8A05D638B /* 50mb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 899BC14DAD8E440CB073894B /* 50mb.jpg */; };
+		94CC2E2E7FE84FF89455BD88 /* triangle.png in Resources */ = {isa = PBXBuildFile; fileRef = CD3E34696B41409A93E40051 /* triangle.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,7 @@
 		8F1F2237B35F4923963A8A93 /* icon.png */ = {isa = PBXFileReference; name = "icon.png"; path = "../assets/icon.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		7EC31CFFA76B4D129CFF3064 /* potrait.jpg */ = {isa = PBXFileReference; name = "potrait.jpg"; path = "../assets/potrait.jpg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		899BC14DAD8E440CB073894B /* 50mb.jpg */ = {isa = PBXFileReference; name = "50mb.jpg"; path = "../assets/50mb.jpg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		CD3E34696B41409A93E40051 /* triangle.png */ = {isa = PBXFileReference; name = "triangle.png"; path = "../assets/triangle.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +113,7 @@
 				8F1F2237B35F4923963A8A93 /* icon.png */,
 				7EC31CFFA76B4D129CFF3064 /* potrait.jpg */,
 				899BC14DAD8E440CB073894B /* 50mb.jpg */,
+				CD3E34696B41409A93E40051 /* triangle.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -182,6 +185,7 @@
 				02A28F2D0E374C589ABAB1FA /* icon.png in Resources */,
 				C2E4520C772A4602ACC15C71 /* potrait.jpg in Resources */,
 				05DDA859C7094FB8A05D638B /* 50mb.jpg in Resources */,
+				94CC2E2E7FE84FF89455BD88 /* triangle.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

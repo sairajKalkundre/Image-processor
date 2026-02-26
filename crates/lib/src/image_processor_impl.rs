@@ -88,9 +88,13 @@ impl ImageProcessorSpec for ImageProcessor {
             };
         }
     }fn crop(&mut self, x: Number, y: Number, width: Number, height: Number) -> Void {
-        todo!()
+        if let Some(state) = PIPELINE.write().as_mut() {
+            state.operations.push(Operation::Crop { x, y, width, height });
+        }
     }fn flip(&mut self, horizontal: Boolean) -> Void {
-        todo!()
+        if let Some(state) = PIPELINE.write().as_mut() {
+            state.operations.push(Operation::Flip { horizontal });
+        }
     }fn resize(&mut self, width: Number, height: Number, fit: &str) -> Void {
         if let Some(state) = PIPELINE.write().as_mut() {
             state.operations.push(Operation::Resize {
@@ -100,7 +104,9 @@ impl ImageProcessorSpec for ImageProcessor {
             });
         }
     }fn rotate(&mut self, degrees: Number) -> Void {
-        todo!()
+        if let Some(state) = PIPELINE.write().as_mut() {
+            state.operations.push(Operation::Rotate { degrees });
+        }
     }fn save(&mut self) -> Promise<ImageResult> {
         init_logging();
         let result: Result<ImageResult, String> = (|| {
@@ -114,7 +120,6 @@ impl ImageProcessorSpec for ImageProcessor {
             let (mut img,_,_, orig_format) = image_utils::decode_image(&state.path)?;
             log_memory("after-decode");
             info!("Starting resize {}x{}", img.width(), img.height());
-            // Apply operations in order
             for op in &state.operations {
                 match op {
                     Operation::Resize { width, height, fit } => {
@@ -138,6 +143,26 @@ impl ImageProcessorSpec for ImageProcessor {
                         log_memory("after-resize");
                         img = resized;
                         eprintln!("✓ Resize → {}x{}", tw, th);
+                    }
+                    Operation::Crop { x, y, width, height } => {
+                        img = img.crop_imm(
+                            *x as u32, *y as u32,
+                            *width as u32, *height as u32
+                        );
+                        info!("✓ Crop → {}x{}", width, height);
+                    }
+                    Operation::Flip { horizontal } => {
+                        img = if *horizontal { img.fliph() } else { img.flipv() };
+                        info!("✓ Flip {}", if *horizontal { "horizontal" } else { "vertical" });
+                    }
+                    Operation::Rotate { degrees } => {
+                        img = match *degrees as i32 {
+                            90  => img.rotate90(),
+                            180 => img.rotate180(),
+                            270 => img.rotate270(),
+                            _   => img,
+                        };
+                        eprintln!("✓ Rotate {}°", degrees);
                     }
                     _ => {}
                 }

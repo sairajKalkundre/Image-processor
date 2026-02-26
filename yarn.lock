@@ -3337,25 +3337,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"Image-processor@workspace:*, Image-processor@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "Image-processor@workspace:."
-  dependencies:
-    "@biomejs/biome": "npm:2.2.7"
-    "@react-native-community/cli-types": "npm:^20.0.2"
-    "@types/react": "npm:^19.0.0"
-    craby-modules: "npm:^0.1.0-rc.4"
-    crabygen: "npm:^0.1.0-rc.4"
-    react: "npm:19.1.1"
-    react-native: "npm:0.82.1"
-    tsdown: "npm:^0.15.10"
-    typescript: "npm:^5.9.3"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-  languageName: unknown
-  linkType: soft
-
 "ImageProcessorExample@workspace:example":
   version: 0.0.0-use.local
   resolution: "ImageProcessorExample@workspace:example"
@@ -3375,13 +3356,13 @@ __metadata:
     "@types/jest": "npm:^29.5.13"
     "@types/react": "npm:^19.2.0"
     "@types/react-test-renderer": "npm:^19.1.0"
-    Image-processor: "workspace:*"
     eslint: "npm:^8.19.0"
     jest: "npm:^29.6.3"
     prettier: "npm:2.8.8"
     react: "npm:19.2.3"
     react-native: "npm:0.84.0"
     react-native-fs: "npm:^2.20.0"
+    react-native-image-processor: "workspace:*"
     react-native-safe-area-context: "npm:^5.5.2"
     react-test-renderer: "npm:19.2.3"
     typescript: "npm:^5.8.3"
@@ -8358,6 +8339,25 @@ __metadata:
   checksum: 10/372e59f55d5e544e87093d832896fa3d56ba9802ca140c17b4b8903afe047714e022d3b1a2ddf18d744cb7f4f973593c8083641db9ae0768688b1390078d67a2
   languageName: node
   linkType: hard
+
+"react-native-image-processor@workspace:*, react-native-image-processor@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "react-native-image-processor@workspace:."
+  dependencies:
+    "@biomejs/biome": "npm:2.2.7"
+    "@react-native-community/cli-types": "npm:^20.0.2"
+    "@types/react": "npm:^19.0.0"
+    craby-modules: "npm:^0.1.0-rc.4"
+    crabygen: "npm:^0.1.0-rc.4"
+    react: "npm:19.1.1"
+    react-native: "npm:0.82.1"
+    tsdown: "npm:^0.15.10"
+    typescript: "npm:^5.9.3"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  languageName: unknown
+  linkType: soft
 
 "react-native-safe-area-context@npm:^5.5.2":
   version: 5.6.2

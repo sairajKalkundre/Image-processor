@@ -84,8 +84,12 @@ pub fn save_bytes(bytes: &[u8], file_name: &str, format: &str) -> Result<ImageRe
         "jpeg" => "jpg",
         other  => other,
     };
+    let timestamp = std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .map(|d| d.as_millis())
+        .unwrap_or(0);
     let out_path = std::env::temp_dir()
-        .join(format!("rust_compressed_{}.{}", stem, ext));
+        .join(format!("rust_compressed_{}_{}_{}.{}", stem,timestamp,"out", ext));
     let out_path_str = out_path.to_string_lossy().to_string();
 
     fs::write(&out_path, bytes)

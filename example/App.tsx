@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Image, Text, Platform, TouchableOpacity } from 'react-native';
 import RNFS from 'react-native-fs';
-import { ImageProcessor } from 'Image-processor';
+import { ImageProcessor } from 'react-native-ferropix';
 
 
 export default function App() {
@@ -12,14 +12,14 @@ export default function App() {
   const getFilePath = async () => {
       let filePath: string;
     if (Platform.OS === 'android') {
-      filePath = `${RNFS.DocumentDirectoryPath}/50mb.jpg`;
+      filePath = `${RNFS.DocumentDirectoryPath}/triangle.jpg`;
       const exists = await RNFS.exists(filePath);
       if (!exists) {
         console.log('called');
-        await RNFS.copyFileAssets('50mb.jpg', filePath);
+        await RNFS.copyFileAssets('triangle.jpg', filePath);
       }
     } else {
-      filePath = `${RNFS.MainBundlePath}/50mb.jpg`;
+      filePath = `${RNFS.MainBundlePath}/triangle.jpg`;
     }
     return filePath;
   }
@@ -30,12 +30,12 @@ export default function App() {
       let filePath = await getFilePath();
       // ImageProcessor.load(filePath);
       console.log('filePath', filePath)
-          const result = await ImageProcessor.load(filePath).resize({width : 750, height : 400, fit:'contain'}).save();
+          const result = await ImageProcessor.load(filePath).crop({width : 271 , height : 187, x : 0, y : 22}).rotate(90).save();
+
         console.log('resize', result);
       setUri(result.uri);
       setInfo(`${result.width}x${result.height}`);
     }
-
       catch (e) {
         console.log('Error loading image', e);
         setInfo(`Error: ${e}`);
@@ -50,9 +50,8 @@ export default function App() {
       {loading && <Text>Loading...</Text>}
       {!loading && uri && (
         <Image
-          key={uri}
           source={{ uri }}
-          style={{ width: 400, height: 200,backgroundColor : 'red' }}
+          style={{ width: 400, height: 400,backgroundColor : 'red' }}
           onLoad={() => console.log('Image rendered successfully')}
           onError={e => console.log('Image error:', e.nativeEvent.error)}
         />
