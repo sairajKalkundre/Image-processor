@@ -1,7 +1,7 @@
 {
-  "name": "Image-processor",
+  "name": "react-native-ferropix",
   "version": "0.1.0",
-  "description": "It manipulates the image",
+  "description": "High-performance React Native image processing powered by Rust",
   "workspaces": [
     "example"
   ],
@@ -51,9 +51,27 @@
   "keywords": [
     "react-native",
     "ios",
-    "android"
+    "android",
+    "image",
+    "image-processing",
+    "image-manipulator",
+    "resize",
+    "compress",
+    "compression",
+    "webp",
+    "mozjpeg",
+    "oxipng",
+    "rust",
+    "turbomodule",
+    "jsi",
+    "expo-image-manipulator",
+    "crop",
+    "flip",
+    "rotate",
+    "jpeg",
+    "png"
   ],
-  "author": "sairaj <optimisitcsair@gami.com>",
+  "author": "Sairaj Kalkundre <optimisticsai@gmail.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/image-rs/image/issues"

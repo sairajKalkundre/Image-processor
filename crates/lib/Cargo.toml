@@ -2,6 +2,7 @@
 name = "image_processor"
 version.workspace = true
 edition.workspace = true
+#build = "build.rs" #to support android build
 
 [dependencies]
 anyhow = "1.0.99"
@@ -12,6 +13,10 @@ base64 = "0.22"
 parking_lot = "0.12"
 mozjpeg  = { version = "0.10", features = ["with_simd"] }
 oxipng = { version = "9", default-features = false, features = ["rayon", "filetime"] }
+log = "0.4"
+
+[target.'cfg(target_os = "android")'.dependencies]
+android_log = "0.1"
 
 [build-dependencies]
 craby_build = { version = "0.1.0-rc", features = ["cxx"] }

@@ -1,0 +1,17 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/icon.png",
+      "sha1": "fbe0fbf086ad85f6c4de44f643cd26669dbc2834"
+    },
+    {
+      "path": "assets/triangle.jpg",
+      "sha1": "b23515fb1b53dc324a68ebfcc9f3d9a24b15ece1"
+    },
+    {
+      "path": "assets/potrait.jpg",
+      "sha1": "62fdd87d8514827a324019222580f7ed281d053b"
+    }
+  ]
+}
