@@ -3361,8 +3361,8 @@ __metadata:
     prettier: "npm:2.8.8"
     react: "npm:19.2.3"
     react-native: "npm:0.84.0"
+    react-native-ferropix: "workspace:*"
     react-native-fs: "npm:^2.20.0"
-    react-native-image-processor: "workspace:*"
     react-native-safe-area-context: "npm:^5.5.2"
     react-test-renderer: "npm:19.2.3"
     typescript: "npm:^5.8.3"
@@ -8324,25 +8324,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-fs@npm:^2.20.0":
-  version: 2.20.0
-  resolution: "react-native-fs@npm:2.20.0"
-  dependencies:
-    base-64: "npm:^0.1.0"
-    utf8: "npm:^3.0.0"
-  peerDependencies:
-    react-native: "*"
-    react-native-windows: "*"
-  peerDependenciesMeta:
-    react-native-windows:
-      optional: true
-  checksum: 10/372e59f55d5e544e87093d832896fa3d56ba9802ca140c17b4b8903afe047714e022d3b1a2ddf18d744cb7f4f973593c8083641db9ae0768688b1390078d67a2
-  languageName: node
-  linkType: hard
-
-"react-native-image-processor@workspace:*, react-native-image-processor@workspace:.":
+"react-native-ferropix@workspace:*, react-native-ferropix@workspace:.":
   version: 0.0.0-use.local
-  resolution: "react-native-image-processor@workspace:."
+  resolution: "react-native-ferropix@workspace:."
   dependencies:
     "@biomejs/biome": "npm:2.2.7"
     "@react-native-community/cli-types": "npm:^20.0.2"
@@ -8358,6 +8342,22 @@ __metadata:
     react-native: "*"
   languageName: unknown
   linkType: soft
+
+"react-native-fs@npm:^2.20.0":
+  version: 2.20.0
+  resolution: "react-native-fs@npm:2.20.0"
+  dependencies:
+    base-64: "npm:^0.1.0"
+    utf8: "npm:^3.0.0"
+  peerDependencies:
+    react-native: "*"
+    react-native-windows: "*"
+  peerDependenciesMeta:
+    react-native-windows:
+      optional: true
+  checksum: 10/372e59f55d5e544e87093d832896fa3d56ba9802ca140c17b4b8903afe047714e022d3b1a2ddf18d744cb7f4f973593c8083641db9ae0768688b1390078d67a2
+  languageName: node
+  linkType: hard
 
 "react-native-safe-area-context@npm:^5.5.2":
   version: 5.6.2

@@ -1,6 +1,6 @@
 {
   "name": "react-native-ferropix",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "High-performance React Native image processing powered by Rust",
   "workspaces": [
     "example"
@@ -48,6 +48,10 @@
     "build": "craby build && tsdown",
     "clean": "craby clean"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sairajKalkundre/react-native-ferropix.git"
+  },
   "keywords": [
     "react-native",
     "ios",
@@ -74,9 +78,9 @@
   "author": "Sairaj Kalkundre <optimisticsai@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/image-rs/image/issues"
+    "url": "https://github.com/sairajKalkundre/react-native-ferropix/issues"
   },
-  "homepage": "https://github.com/image-rs/image#readme",
+  "homepage": "https://github.com/sairajKalkundre/react-native-ferropix#README.md",
   "dependencies": {
     "craby-modules": "^0.1.0-rc.4"
   },

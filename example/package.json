@@ -13,8 +13,8 @@
     "@react-native/new-app-screen": "0.84.0",
     "react": "19.2.3",
     "react-native": "0.84.0",
+    "react-native-ferropix": "workspace:*",
     "react-native-fs": "^2.20.0",
-    "react-native-image-processor": "workspace:*",
     "react-native-safe-area-context": "^5.5.2"
   },
   "devDependencies": {

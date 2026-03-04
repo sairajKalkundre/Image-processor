@@ -8,7 +8,6 @@ pub fn compress_jpeg(img: &DynamicImage, quality: u8) -> Result<Vec<u8>, String>
     let rgb = img.to_rgb8();
     let (width, height) = rgb.dimensions();
     let pixels = rgb.into_raw();
-
     // mozjpeg panics on error instead of returning Result
     // catch_unwind converts that panic into a Result
     let result = catch_unwind(|| -> std::io::Result<Vec<u8>> {

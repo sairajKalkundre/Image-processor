@@ -1,15 +1,35 @@
 # react-native-ferropix 🦀
 
+[![mit licence](https://img.shields.io/dub/l/vibe-d.svg?style=for-the-badge)](https://github.com/sairajKalkundre/react-native-ferropix/blob/master/LICENSE)
+![npm version](https://img.shields.io/npm/v/react-native-ferropix?style=for-the-badge)
+[![platform - android](https://img.shields.io/badge/platform-Android-3ddc84.svg?logo=android&style=for-the-badge)](https://www.android.com)
+[![platform - ios](https://img.shields.io/badge/platform-iOS-000.svg?logo=apple&style=for-the-badge)](https://developer.apple.com/ios)
+
 High-performance React Native image processing powered by Rust.
 
-## Why ferropix?
+![wallpaper](wallpaper.png)
 
-|                       | ferropix | expo-image-manipulator |
-|-----------------------|--|-----------------------|
-| 316MP image           | ✅ Works, 220MB RAM | ❌ Crashes (OOM) [#36861](https://github.com/expo/expo/issues/36861      |
-| EXIF preservation     | ✅ | ❌ Stripped            |
-| Compression accuracy  | ✅ mozjpeg | ❌ Inconsistent        |
-| Chainning Api Support | ✅ | ❌                     |
+## Why another image processing library?
+
+Most React Native image libraries process images through platform-specific
+layers — ObjCTurboModule on iOS and JavaTurboModule on Android. This adds
+overhead on every call. ferropix is a pure C++ TurboModule that talks
+directly to Rust via JSI, bypassing both platform layers entirely.
+
+The bigger problem is the encoder. Libraries like expo-image-manipulator
+use Android's Bitmap API, which throws away all JPEG structure on decode:
+
+    50MB JPEG → decode to raw Bitmap (loses all JPEG structure)
+             → re-encode with Skia (no optimization)
+             → 13MB output ❌
+
+ferropix decodes the same file and hands it directly to mozjpeg:
+
+    50MB JPEG → decode to raw pixels
+             → mozjpeg (Huffman optimization + chroma subsampling + DCT tuning)
+             → 1.8MB output ✅
+
+Same quality setting. 86% smaller. The difference is entirely the encoder.
 
 
 ## Installation
@@ -35,7 +55,6 @@ ENV['RCT_NEW_ARCH_ENABLED'] = '1'
 ```
 ---
 ## How it works
-
 ### Pure C++ TurboModule — no platform bridge overhead
 
 Most React Native libraries go through platform-specific layers:
@@ -44,7 +63,7 @@ JS → JSI → ObjCTurboModule (iOS) → Native Code
 JS → JSI → JavaTurboModule (Android) → Native Code
 ```
 
-react-native0ferropix bypasses both entirely:
+react-native-ferropix bypasses both entirely:
 ```
 JS → JSI → C++ TurboModule → Rust
 ```

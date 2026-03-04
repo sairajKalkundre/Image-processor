@@ -8,8 +8,17 @@ use log::info;
 use crate::ffi::bridging::{ImageResult};
 
 const MAX_PIXELS: u32 = 25_000_000;
+
+fn clean_path(path: &str) -> String {
+    path
+        .replace('\0', "")          // remove NUL bytes from bridge
+        .replace("file://", "")     // strip file:// URI prefix
+        .trim()
+        .to_string()
+}
 pub fn decode_image(path: &str) -> Result<(DynamicImage, u32, u32, String), String> {
-    let bytes = fs::read(path)
+    let path = clean_path(path);
+    let bytes = fs::read(&path)
         .map_err(|e| format!("Failed to read file: {}", e))?;
 
     if bytes.is_empty() {
